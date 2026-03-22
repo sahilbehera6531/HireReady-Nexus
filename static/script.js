@@ -24,7 +24,15 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(response => response.json())
             .then(data => {
                 console.log("Response from backend:", data);
-                alert("Score: " + data.accuracy_score);
+
+                document.getElementById("scoreDisplay").innerText =
+                    "Score: " + data.accuracy_score + " | Total: " + data.total_score;
+
+                document.getElementById("feedbackDisplay").innerText =
+                    "Feedback: " + data.feedback;
+
+                document.getElementById("nextQuestionDisplay").innerText =
+                    "Next Question: " + data.next_question;
             })
             .catch(error => {
                 console.error("Error:", error);
