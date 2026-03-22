@@ -4,6 +4,8 @@ from gen import calculate_accuracyscore, getfeedback, getnextquestion
 app = Flask(__name__)
 prev_question = "What is Data Science?"
 field = "Data Structures and Algorithm"
+Score = 0
+mul = 1
 
 @app.route('/')
 def home():
@@ -24,25 +26,30 @@ def ask_question():
     data = request.json
     answer = data.get('answer', '')
 
+    global prev_question, Score, mul
+
+    data = request.json
+    answer = data.get('answer', '')
+
     accuracy_score = calculate_accuracyscore(answer, prev_question)
 
-    # Decide if correct
     if accuracy_score >= 30:
+        Score += accuracy_score * mul
+        mul += 1
         Correct = True
     else:
         Correct = False
+        mul = 1
 
-    # Generate next question
     next_question = getnextquestion(prev_question, answer, Correct, field)
 
-    # Get feedback
     feedback = getfeedback(prev_question, answer)
 
-    # Update global question
     prev_question = next_question
 
     return jsonify({
         "accuracy_score": accuracy_score,
+        "total_score": Score,
         "feedback": feedback,
         "next_question": next_question
     })
