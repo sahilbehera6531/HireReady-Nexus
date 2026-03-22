@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mock Interview</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<h2>Mock Interview</h2>
+
+<h3 id="questionDisplay">{{ prev_question }}</h3>
+
+<textarea id="userAnswer" placeholder="Enter your answer here..." rows="4" cols="50"></textarea>
+<br><br>
+
+<button id="submitAnswer">Submit Answer</button>
+
+<div id="resultBox" style="margin-top:20px;">
+    <h3 id="scoreDisplay"></h3>
+    <p id="feedbackDisplay"></p>
+    <h4 id="nextQuestionDisplay"></h4>
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
