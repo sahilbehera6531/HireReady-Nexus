@@ -6,5 +6,13 @@ app = Flask(__name__)
 def home():
     return render_template('home.html')
 
+@app.route('/mock_interview')
+def mock_interview():
+    return "<h1>Mock Interview Page </h1>"
+
+@app.route('/gd')
+def group_discussion():
+    return "<h1>Group Discussion Page</h1>"
+
 if __name__ == '__main__':
     app.run(debug=True)

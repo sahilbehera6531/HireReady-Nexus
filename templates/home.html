@@ -84,14 +84,14 @@
 <body>
     <div class="topbar">
         <div class="logo">HireReady-Nexus</div>
-        <div class="tagline">AI-Powered Success Path</div>
+        <div class="tagline">Your Gateway to Success</div>
     </div>
     <div class="hero">
         <h1>Welcome to the Simulation Portal </h1>
-        <p>Prepare for your with our AI-driven simulations for success</p>
+        <p>Prepare for your future with our AI-driven interactive simulations</p>
         <div class="button-container">
-            <a href="/gd" class="btn btn-gd">Group Discussion</a>
-            <a href="/mock_interview" class="btn btn-mock">Mock Interview</a>
+            <a href="{{ url_for('group_discussion') }}" class="btn btn-gd">Group Discussion</a>
+            <a href="{{ url_for('mock_interview') }}" class="btn btn-mock">Mock Interview</a>
         </div>
     </div>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
