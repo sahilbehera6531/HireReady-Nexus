@@ -93,6 +93,10 @@
             <a href="{{ url_for('group_discussion') }}" class="btn btn-gd">Group Discussion</a>
             <a href="{{ url_for('mock_interview') }}" class="btn btn-mock">Mock Interview</a>
         </div>
+        <br><br>
+        <textarea id="userAnswer" placeholder="Enter your answer here..." rows="4" cols="50"></textarea>
+        <br><br>
+        <button id="submitAnswer">Submit Answer</button>
     </div>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
