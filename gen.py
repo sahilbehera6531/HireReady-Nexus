@@ -34,3 +34,22 @@ def calculate_accuracyscore(answer, prev_question):
 
     except:
         return 0
+    
+def getfeedback(prev_question, answer):
+
+    prompt = f"""
+    Question: {prev_question}
+
+    Answer: {answer}
+
+    Provide feedback and improvement suggestions.
+    """
+
+    response = client.chat.completions.create(
+        messages=[
+            {"role": "user", "content": prompt}
+        ],
+        model="llama-3.1-8b-instant"
+    )
+
+    return response.choices[0].message.content
