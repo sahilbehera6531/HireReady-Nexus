@@ -13,7 +13,7 @@ def home():
 
 @app.route('/mock_interview')
 def mock_interview():
-    return "<h1>Mock Interview Page </h1>"
+    return render_template('mock_interview.html', prev_question=prev_question)
 
 @app.route('/gd')
 def group_discussion():

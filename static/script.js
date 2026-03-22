@@ -31,8 +31,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById("feedbackDisplay").innerText =
                     "Feedback: " + data.feedback;
 
-                document.getElementById("nextQuestionDisplay").innerText =
-                    "Next Question: " + data.next_question;
+                // document.getElementById("nextQuestionDisplay").innerText =
+                //     "Next Question: " + data.next_question;
+
+                document.getElementById("questionDisplay").innerText = 
+                    data.next_question;
             })
             .catch(error => {
                 console.error("Error:", error);

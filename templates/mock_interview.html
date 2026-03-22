@@ -5,21 +5,30 @@
     <title>Mock Interview</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
+
 <body>
 
-<h2>Mock Interview</h2>
+<div class="container">
 
-<h3 id="questionDisplay">{{ prev_question }}</h3>
+    <h1>Mock Interview</h1>
 
-<textarea id="userAnswer" placeholder="Enter your answer here..." rows="4" cols="50"></textarea>
-<br><br>
+    <!-- QUESTION BOX -->
+    <div class="card">
+        <h3 id="questionDisplay">{{ prev_question }}</h3>
+    </div>
 
-<button id="submitAnswer">Submit Answer</button>
+    <!-- INPUT BOX -->
+    <div class="card">
+        <textarea id="userAnswer" placeholder="Type your answer here..."></textarea>
+        <button id="submitAnswer">Submit Answer</button>
+    </div>
 
-<div id="resultBox" style="margin-top:20px;">
-    <h3 id="scoreDisplay"></h3>
-    <p id="feedbackDisplay"></p>
-    <h4 id="nextQuestionDisplay"></h4>
+    <!-- RESULT BOX -->
+    <div class="card" id="resultBox">
+        <h3 id="scoreDisplay"></h3>
+        <p id="feedbackDisplay"></p>
+    </div>
+
 </div>
 
 <script src="{{ url_for('static', filename='script.js') }}"></script>
