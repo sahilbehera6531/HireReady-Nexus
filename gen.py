@@ -49,6 +49,34 @@ def getfeedback(prev_question, answer):
         messages=[
             {"role": "user", "content": prompt}
         ],
+        model="llama-3.1-8b-instant",
+        temperature=0   # ADD THIS
+    )
+
+    return response.choices[0].message.content
+
+def getnextquestion(prev_question, answer, Correct, field):
+
+    if Correct:
+        prompt = f"""
+        Based on this answer:
+
+        {answer}
+
+        Generate a follow-up interview question related to {field}.
+        """
+
+    else:
+        prompt = f"""
+        Generate a technical interview question for the field:
+
+        {field}
+        """
+
+    response = client.chat.completions.create(
+        messages=[
+            {"role": "user", "content": prompt}
+        ],
         model="llama-3.1-8b-instant"
     )
 
