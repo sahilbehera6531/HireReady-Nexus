@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from gen import calculate_accuracyscore
+from gen import calculate_accuracyscore, getfeedback
 
 app = Flask(__name__)
 prev_question = "What is Data Science?"
@@ -25,9 +25,12 @@ def ask_question():
 
     accuracy_score = calculate_accuracyscore(answer, prev_question)
 
+    # NEW: get feedback
+    feedback = getfeedback(prev_question, answer)    
 
     return jsonify({
         "accuracy_score": accuracy_score,
+        "feedback": feedback,
         "next_question": prev_question
     })
 
