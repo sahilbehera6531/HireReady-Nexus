@@ -75,9 +75,44 @@ def upload_audio():
     file.save(filepath)
 
     confidence = run_model(filepath)
+    accuracy_score = int(confidence)
+
+    # difficulty update (same logic as text)
+    if accuracy_score >= 70:
+        if difficulty == "easy":
+            difficulty = "medium"
+        elif difficulty == "medium":
+            difficulty = "hard"
+
+    elif accuracy_score < 40:
+        if difficulty == "hard":
+            difficulty = "medium"
+        elif difficulty == "medium":
+            difficulty = "easy"
+
+    # scoring logic
+    global Score, mul, prev_question
+
+    if accuracy_score >= 30:
+        Score += accuracy_score * mul
+        mul += 1
+        Correct = True
+    else:
+        Correct = False
+        mul = 1
+
+    # generate next question (SAME as text flow)
+    next_question = getnextquestion(prev_question, "Audio response", Correct, field, difficulty)
+
+    feedback = "Audio evaluated successfully"
+
+    prev_question = next_question
 
     return jsonify({
-        "confidence": confidence
+        "accuracy_score": accuracy_score,
+        "total_score": Score,
+        "feedback": feedback,
+        "next_question": next_question
     })
 
 if __name__ == '__main__':

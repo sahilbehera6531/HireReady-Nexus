@@ -43,6 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         });
     }
+    //Audio
     const uploadBtn = document.getElementById("uploadAudio");
 
     if (uploadBtn) {
@@ -65,8 +66,14 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .then(res => res.json())
             .then(data => {
-                document.getElementById("audioScore").innerText =
-                    "Audio Confidence: " + data.confidence;
+                document.getElementById("scoreDisplay").innerText =
+                    "Score: " + data.accuracy_score + " | Total: " + data.total_score;
+
+                document.getElementById("feedbackDisplay").innerText =
+                    "Feedback: " + data.feedback;
+
+                document.getElementById("questionDisplay").innerText =
+                    data.next_question;
             });
         });
     }
