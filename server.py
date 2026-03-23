@@ -6,6 +6,7 @@ prev_question = "What is Data Science?"
 field = "Data Structures and Algorithm"
 Score = 0
 mul = 1
+difficulty = "easy"
 
 @app.route('/')
 def home():
@@ -21,6 +22,20 @@ def group_discussion():
 
 @app.route('/ask', methods=['POST'])
 def ask_question():
+    global difficulty
+
+    if accuracy_score >= 70:
+        if difficulty == "easy":
+            difficulty = "medium"
+        elif difficulty == "medium":
+            difficulty = "hard"
+
+    elif accuracy_score < 40:
+        if difficulty == "hard":
+            difficulty = "medium"
+        elif difficulty == "medium":
+            difficulty = "easy"
+
     global prev_question
 
     data = request.json
@@ -41,7 +56,7 @@ def ask_question():
         Correct = False
         mul = 1
 
-    next_question = getnextquestion(prev_question, answer, Correct, field)
+    next_question = getnextquestion(prev_question, answer, Correct, field, difficulty)
 
     feedback = getfeedback(prev_question, answer)
 

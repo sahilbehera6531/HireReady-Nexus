@@ -68,12 +68,12 @@ def getfeedback(prev_question, answer):
 
     return response.choices[0].message.content
 
-def getnextquestion(prev_question, answer, Correct, field):
+def getnextquestion(prev_question, answer, Correct, field, difficulty):
 
     prompt = f"""
     You are an interviewer.
 
-    Ask ONLY ONE short and clear technical interview question related to {field}
+    Ask ONE {difficulty} level technical interview question related to {field}
 
     Rules:
     - Keep it under 2 lines
