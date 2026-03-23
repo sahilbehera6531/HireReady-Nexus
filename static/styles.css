@@ -1,97 +1,213 @@
 body {
     background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-    font-family: Arial, sans-serif;
+    font-family: 'Orbitron', sans-serif;
     color: white;
     margin: 0;
 }
 
+/* TITLE */
+.main-title {
+    margin-left: 7%;
+    margin-top: 20px;
+    font-size: 36px;
+    color: #00d4ff;
+}
+
+/* GRID LAYOUT */
 .container {
-    width: 60%;
+    display: grid;
+    grid-template-columns: 1.7fr 1.3fr;
+    gap: 40px;
+    width: 85%;
     margin: auto;
-    margin-top: 50px;
-    text-align: center;
+    margin-top: 20px;
+
+    min-height: 85vh; /* 🔥 fills bottom */
 }
 
-.card {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 10px;
-}
-
-textarea {
-    width: 100%;
-    height: 100px;
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-}
-
-button {
-    margin-top: 10px;
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: none;
-    background: #007bff;
-    color: white;
-    cursor: pointer;
-}
-
-button:hover {
-    background: #0056b3;
-}
-
-/* ===== MOCK INTERVIEW UI STYLING ===== */
-
-.question-box {
-    background: rgba(0, 0, 0, 0.6);
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
-}
-
-.answer-box {
-    background: rgba(255, 255, 255, 0.08);
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-}
-
-.side-panel {
-    background: rgba(0, 0, 0, 0.7);
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(255, 99, 71, 0.5);
-}
-
-/* Layout */
-.container {
+/* LEFT SIDE */
+.left-section {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 25px;
+    height: 100%;
 }
 
-/* Textarea */
+/* QUESTION BOX */
+.question-box {
+    background: rgba(0, 0, 0, 0.75);
+    padding: 35px;
+    border-radius: 18px;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.7);
+    font-size: 20px;
+}
+
+/* ANSWER BOX */
+.answer-box {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 30px;
+    border-radius: 15px;
+
+    flex-grow: 1; /* 🔥 fills remaining space */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+/* RIGHT PANEL */
+.side-panel {
+    background: rgba(36, 36, 62, 0.9);
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.7);
+
+    height: fit-content;
+}
+
+/* TEXT */
+h1, h2, h3 {
+    color: #00d4ff;
+}
+
+.side-panel h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+/* RESPONSE TEXT */
+#scoreDisplay,
+#feedbackDisplay {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* TEXTAREA */
 textarea {
     width: 100%;
-    height: 120px;
-    padding: 12px;
-    border-radius: 10px;
+    height: 160px;
+    border-radius: 14px;
+    padding: 18px;
+    background: rgba(15, 15, 40, 0.6);
+    color: white;
     border: none;
-    margin-bottom: 10px;
+    font-size: 15px;
+    box-shadow: inset 0 0 12px rgba(0, 212, 255, 0.8);
+    margin-bottom: 20px;
 }
 
-/* Buttons */
+/* BUTTONS (BIG + CLEAN) */
 button {
-    background: linear-gradient(135deg, #007bff, #00c6ff);
+    background: linear-gradient(135deg, #00d4ff, #00a8cc);
     border: none;
-    padding: 10px 15px;
-    border-radius: 8px;
+    padding: 12px 28px;   /* 🔥 bigger */
+    border-radius: 30px;
     color: white;
+    margin-right: 12px;
+    margin-top: 10px;
+    font-size: 14px;      /* 🔥 bigger text */
     cursor: pointer;
+    transition: 0.3s;
 }
 
 button:hover {
-    transform: scale(1.05);
+    transform: scale(1.1);
+    box-shadow: 0 0 10px #00d4ff, 0 0 20px #00d4ff;
+}
+
+/* BUTTON GROUP SPACING */
+.answer-box button {
+    align-self: flex-start;
+}
+
+/* ===== ANIMATIONS ===== */
+
+/* Fade in whole page */
+body {
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Question box slides from left */
+.question-box {
+    animation: slideLeft 0.8s ease;
+}
+
+@keyframes slideLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Side panel slides from right */
+.side-panel {
+    animation: slideRight 0.8s ease;
+}
+
+@keyframes slideRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Answer box slight pop */
+.answer-box {
+    animation: popUp 0.6s ease;
+}
+
+@keyframes popUp {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+button, textarea, .question-box, .side-panel {
+    transition: all 0.3s ease;
+}
+
+.topbar {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+.tagline {
+    font-size: 1rem;
+    color: #ccc;
 }

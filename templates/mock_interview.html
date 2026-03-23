@@ -3,28 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>Mock Interview</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 
 <body>
+    
+<div class="topbar">
+    <div class="logo">HireReady-Nexus</div>
+    <div class="tagline">Your Gateway to Success</div>
+</div>
 
+    
+<h1 class="main-title">Mock Interview</h1>
 <div class="container">
 
-    <h1>Mock Interview</h1>
+    <div class="left-section">
+        <!-- QUESTION BOX -->
+        <div class="question-box">
+            <h2 id="questionDisplay">{{ prev_question }}</h2>
+        </div>
 
-    <!-- QUESTION BOX -->
-    <div class="card">
-        <h2 id="questionDisplay">{{ prev_question }}</h2>
-    </div>
-
-    <!-- INPUT BOX -->
-    <div class="answer-box">
-        <textarea id="userAnswer" placeholder="Type your answer here..."></textarea>
-        <button id="submitAnswer">Submit Answer</button>
-        <br><br>
-        <button id="startRecording">🎤 Start Speaking</button>
-        <button id="stopRecording">⏹ Stop</button>
-        <p id="recordingStatus"></p>
+        <!-- INPUT BOX -->
+        <div class="answer-box">
+            <textarea id="userAnswer" placeholder="Type your answer here..."></textarea>
+            <button id="submitAnswer">Submit Answer</button>
+            <br><br>
+            <button id="startRecording">🎤 Start Speaking</button>
+            <button id="stopRecording">⏹ Stop</button>
+            <p id="recordingStatus"></p>
+        </div>
     </div>
 
     <!-- RESULT BOX -->

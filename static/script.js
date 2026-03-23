@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
+            document.getElementById("feedbackDisplay").innerText = "Processing...";
             fetch('/ask', {
                 method: 'POST',
                 headers: {
@@ -24,20 +25,23 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .then(response => response.json())
             .then(data => {
-                console.log("Response from backend:", data);
+            console.log("Response from backend:", data);
 
-                document.getElementById("scoreDisplay").innerText =
-                    "Score: " + data.accuracy_score + " | Total: " + data.total_score;
+            // Update score nicely
+            document.getElementById("scoreDisplay").innerText =
+                `Score: ${data.accuracy_score} | Total: ${data.total_score}`;
 
-                document.getElementById("feedbackDisplay").innerText =
-                    "Feedback: " + data.feedback;
+            // Update feedback clean
+            document.getElementById("feedbackDisplay").innerText =
+                `Feedback: ${data.feedback}`;
 
-                // document.getElementById("nextQuestionDisplay").innerText =
-                //     "Next Question: " + data.next_question;
+            // Update next question
+            document.getElementById("questionDisplay").innerText =
+                data.next_question;
 
-                document.getElementById("questionDisplay").innerText = 
-                    data.next_question;
-            })
+            // Clear textarea after submit
+            document.getElementById("userAnswer").value = "";
+        })
             .catch(error => {
                 console.error("Error:", error);
             });
@@ -98,12 +102,12 @@ document.addEventListener("DOMContentLoaded", () => {
                         "Score: " + data.accuracy_score + " | Total: " + data.total_score;
 
                     document.getElementById("feedbackDisplay").innerText =
-                        "Feedback: " + data.feedback;
+                        data.feedback;
 
                     document.getElementById("questionDisplay").innerText =
                         data.next_question;
 
-                    document.getElementById("recordingStatus").innerText = "Done!";
+                    document.getElementById("recordingStatus").innerText = "Processing audio...";
                 });
             };
         });

@@ -51,13 +51,13 @@ def getfeedback(prev_question, answer):
     prompt = f"""
     You are an interviewer.
 
-    Give SHORT and CLEAR feedback on the candidate's answer.
+    Evaluate the candidate's answer and provide concise feedback.
 
     Rules:
-    - Max 3 lines
-    - No formatting (**, bullets, markdown)
-    - No long paragraphs
-    - Be simple and direct
+    - Max 2-3 lines
+    - DO NOT ask the user to try again or reattempt
+    - DO NOT give instructions like "try again" or "answer this"
+    - Keep it short, clear and professional
 
     Question: {prev_question}
     Answer: {answer}
