@@ -10,12 +10,18 @@ client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 def calculate_accuracyscore(answer, prev_question):
 
     prompt = f"""
-    Evaluate this answer.
+    You are an interviewer.
+
+    Evaluate the candidate's answer.
+
+    Rules:
+    - Return ONLY a number between 0 and 100
+    - Do NOT write anything else
+    - Do NOT explain
+    - Do NOT add words
 
     Question: {prev_question}
     Answer: {answer}
-
-    Return only a number between 0 and 100.
     """
 
     try:
@@ -38,11 +44,18 @@ def calculate_accuracyscore(answer, prev_question):
 def getfeedback(prev_question, answer):
 
     prompt = f"""
+    You are an interviewer.
+
+    Give SHORT and CLEAR feedback on the candidate's answer.
+
+    Rules:
+    - Max 3 lines
+    - No formatting (**, bullets, markdown)
+    - No long paragraphs
+    - Be simple and direct
+
     Question: {prev_question}
-
     Answer: {answer}
-
-    Provide feedback and improvement suggestions.
     """
 
     response = client.chat.completions.create(
@@ -60,7 +73,7 @@ def getnextquestion(prev_question, answer, Correct, field):
     prompt = f"""
     You are an interviewer.
 
-    Ask ONLY ONE short and clear technical interview question.
+    Ask ONLY ONE short and clear technical interview question related to {field}
 
     Rules:
     - Keep it under 2 lines
