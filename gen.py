@@ -34,9 +34,14 @@ def calculate_accuracyscore(answer, prev_question):
 
         text = response.choices[0].message.content
 
-        number = re.search(r'\d+', text)
-
-        return int(number.group()) if number else 0
+        try:
+            score = int(re.findall(r'\d+', text)[0])
+            if 0 <= score <= 100:
+                return score
+            else:
+                return 0
+        except:
+            return 0
 
     except:
         return 0

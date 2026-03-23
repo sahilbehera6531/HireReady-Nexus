@@ -14,11 +14,11 @@
 
     <!-- QUESTION BOX -->
     <div class="card">
-        <h3 id="questionDisplay">{{ prev_question }}</h3>
+        <h2 id="questionDisplay">{{ prev_question }}</h2>
     </div>
 
     <!-- INPUT BOX -->
-    <div class="card">
+    <div class="answer-box">
         <textarea id="userAnswer" placeholder="Type your answer here..."></textarea>
         <button id="submitAnswer">Submit Answer</button>
         <br><br>
@@ -28,8 +28,9 @@
     </div>
 
     <!-- RESULT BOX -->
-    <div class="card" id="resultBox">
-        <h3 id="scoreDisplay"></h3>
+    <div class="side-panel">
+        <h3>Response Details</h3>
+        <p id="scoreDisplay"></p>
         <p id="feedbackDisplay"></p>
     </div>
 
