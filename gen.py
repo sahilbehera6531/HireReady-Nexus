@@ -57,21 +57,21 @@ def getfeedback(prev_question, answer):
 
 def getnextquestion(prev_question, answer, Correct, field):
 
-    if Correct:
-        prompt = f"""
-        Based on this answer:
+    prompt = f"""
+    You are an interviewer.
 
-        {answer}
+    Ask ONLY ONE short and clear technical interview question.
 
-        Generate a follow-up interview question related to {field}.
-        """
+    Rules:
+    - Keep it under 2 lines
+    - Do NOT include explanations
+    - Do NOT include formatting like ** or markdown
+    - Do NOT include examples or constraints
+    - Only ask the question
 
-    else:
-        prompt = f"""
-        Generate a technical interview question for the field:
-
-        {field}
-        """
+    Previous question: {prev_question}
+    Candidate answer: {answer}
+    """
 
     response = client.chat.completions.create(
         messages=[
