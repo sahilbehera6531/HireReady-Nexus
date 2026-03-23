@@ -20,7 +20,7 @@ def mock_interview():
 
 @app.route('/gd')
 def group_discussion():
-    return "<h1>Group Discussion Page</h1>"
+    return render_template('gd.html')
 
 @app.route('/ask', methods=['POST'])
 def ask_question():
@@ -117,6 +117,56 @@ def upload_audio():
         })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@app.route('/generate_group_response', methods=['POST'])
+def generate_group_response():
+    try:
+        data = request.json
+        user_input = data.get("user_input")
+        topic = data.get("topic")
+
+        prompt = f"""
+Topic: {topic}
+
+User said: {user_input}
+
+Continue a group discussion.
+
+Return responses EXACTLY in this format:
+
+Alice: <Alice response>
+Bob: <Bob response>
+Charlie: <Charlie response>
+"""
+
+        from groq import Groq
+        import os
+        client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+
+        response = client.chat.completions.create(
+            messages=[{"role": "user", "content": prompt}],
+            model="llama-3.1-8b-instant"
+        )
+
+        text = response.choices[0].message.content
+
+        responses = []
+        for line in text.split("\n"):
+            if ":" in line:
+                name, content = line.split(":", 1)
+                responses.append({
+                    "name": name.strip(),
+                    "content": content.strip()
+                })
+
+        return jsonify({"responses": responses[:3]})
+
+    except Exception:
+        return jsonify({
+            "responses": [
+                {"name": "System", "content": "Error generating discussion response."}
+            ]
+        })
 
 if __name__ == '__main__':
     
