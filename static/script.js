@@ -43,4 +43,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
         });
     }
+    const uploadBtn = document.getElementById("uploadAudio");
+
+    if (uploadBtn) {
+        uploadBtn.addEventListener("click", () => {
+
+            const fileInput = document.getElementById("audioInput");
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert("Please select audio file");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("audio", file);
+
+            fetch('/upload_audio', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("audioScore").innerText =
+                    "Audio Confidence: " + data.confidence;
+            });
+        });
+    }
 });

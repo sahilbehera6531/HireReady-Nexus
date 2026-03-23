@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from gen import calculate_accuracyscore, getfeedback, getnextquestion
+from model import run_model
+import os
 
 app = Flask(__name__)
 prev_question = "What is Data Science?"
@@ -23,7 +25,14 @@ def group_discussion():
 @app.route('/ask', methods=['POST'])
 def ask_question():
     global difficulty
+    global prev_question, Score, mul
 
+    data = request.json
+    answer = data.get('answer', '')
+
+    accuracy_score = calculate_accuracyscore(answer, prev_question)
+
+    # difficulty logic
     if accuracy_score >= 70:
         if difficulty == "easy":
             difficulty = "medium"
@@ -36,18 +45,7 @@ def ask_question():
         elif difficulty == "medium":
             difficulty = "easy"
 
-    global prev_question
-
-    data = request.json
-    answer = data.get('answer', '')
-
-    global prev_question, Score, mul
-
-    data = request.json
-    answer = data.get('answer', '')
-
-    accuracy_score = calculate_accuracyscore(answer, prev_question)
-
+    #Scoring logic
     if accuracy_score >= 30:
         Score += accuracy_score * mul
         mul += 1
@@ -67,6 +65,19 @@ def ask_question():
         "total_score": Score,
         "feedback": feedback,
         "next_question": next_question
+    })
+
+@app.route('/upload_audio', methods=['POST'])
+def upload_audio():
+    file = request.files['audio']
+    
+    filepath = os.path.join("uploads", file.filename)
+    file.save(filepath)
+
+    confidence = run_model(filepath)
+
+    return jsonify({
+        "confidence": confidence
     })
 
 if __name__ == '__main__':
