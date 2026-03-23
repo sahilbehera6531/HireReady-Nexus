@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     console.log("JS Loaded");
 
+    //TEXT INPUT
     const sendButton = document.getElementById("submitAnswer");
 
     if (sendButton) {
@@ -40,41 +41,71 @@ document.addEventListener("DOMContentLoaded", () => {
             .catch(error => {
                 console.error("Error:", error);
             });
-
         });
     }
-    //Audio
-    const uploadBtn = document.getElementById("uploadAudio");
 
-    if (uploadBtn) {
-        uploadBtn.addEventListener("click", () => {
+    //MIC INPUT
+    let mediaRecorder;
+    let audioChunks = [];
 
-            const fileInput = document.getElementById("audioInput");
-            const file = fileInput.files[0];
+    const startBtn = document.getElementById("startRecording");
+    const stopBtn = document.getElementById("stopRecording");
 
-            if (!file) {
-                alert("Please select audio file");
+    if (startBtn && stopBtn) {
+
+        startBtn.addEventListener("click", async () => {
+
+            let stream;
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            } catch (err) {
+                alert("Microphone permission denied or not working");
                 return;
             }
 
-            const formData = new FormData();
-            formData.append("audio", file);
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
 
-            fetch('/upload_audio', {
-                method: 'POST',
-                body: formData
-            })
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById("scoreDisplay").innerText =
-                    "Score: " + data.accuracy_score + " | Total: " + data.total_score;
+            mediaRecorder.ondataavailable = event => {
+                audioChunks.push(event.data);
+            };
 
-                document.getElementById("feedbackDisplay").innerText =
-                    "Feedback: " + data.feedback;
+            mediaRecorder.start();
 
-                document.getElementById("questionDisplay").innerText =
-                    data.next_question;
-            });
+            document.getElementById("recordingStatus").innerText = "Recording...";
+        });
+
+        stopBtn.addEventListener("click", () => {
+
+            if (!mediaRecorder) return;
+            mediaRecorder.stop();
+
+            mediaRecorder.onstop = () => {
+
+                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+
+                const formData = new FormData();
+                formData.append("audio", audioBlob, "recording.wav");
+
+                fetch('/upload_audio', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(res => res.json())
+                .then(data => {
+
+                    document.getElementById("scoreDisplay").innerText =
+                        "Score: " + data.accuracy_score + " | Total: " + data.total_score;
+
+                    document.getElementById("feedbackDisplay").innerText =
+                        "Feedback: " + data.feedback;
+
+                    document.getElementById("questionDisplay").innerText =
+                        data.next_question;
+
+                    document.getElementById("recordingStatus").innerText = "Done!";
+                });
+            };
         });
     }
 });

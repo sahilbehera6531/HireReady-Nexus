@@ -69,51 +69,54 @@ def ask_question():
 
 @app.route('/upload_audio', methods=['POST'])
 def upload_audio():
-    file = request.files['audio']
-    
-    filepath = os.path.join("uploads", file.filename)
-    file.save(filepath)
+    try:
+        file = request.files['audio']
+        
+        filepath = os.path.join("uploads", "recording.wav")
+        file.save(filepath)
 
-    confidence = run_model(filepath)
-    accuracy_score = int(confidence)
+        confidence = run_model(filepath)
+        accuracy_score = int(confidence)
 
-    # difficulty update (same logic as text)
-    if accuracy_score >= 70:
-        if difficulty == "easy":
-            difficulty = "medium"
-        elif difficulty == "medium":
-            difficulty = "hard"
+        global Score, mul, prev_question, difficulty
 
-    elif accuracy_score < 40:
-        if difficulty == "hard":
-            difficulty = "medium"
-        elif difficulty == "medium":
-            difficulty = "easy"
+        # difficulty update (same logic as text)
+        if accuracy_score >= 70:
+            if difficulty == "easy":
+                difficulty = "medium"
+            elif difficulty == "medium":
+                difficulty = "hard"
 
-    # scoring logic
-    global Score, mul, prev_question
+        elif accuracy_score < 40:
+            if difficulty == "hard":
+                difficulty = "medium"
+            elif difficulty == "medium":
+                difficulty = "easy"
 
-    if accuracy_score >= 30:
-        Score += accuracy_score * mul
-        mul += 1
-        Correct = True
-    else:
-        Correct = False
-        mul = 1
+        # scoring logic
+        if accuracy_score >= 30:
+            Score += accuracy_score * mul
+            mul += 1
+            Correct = True
+        else:
+            Correct = False
+            mul = 1
 
-    # generate next question (SAME as text flow)
-    next_question = getnextquestion(prev_question, "Audio response", Correct, field, difficulty)
+        # generate next question (SAME as text flow)
+        next_question = getnextquestion(prev_question, "Audio response", Correct, field, difficulty)
 
-    feedback = "Audio evaluated successfully"
+        feedback = "Audio evaluated successfully"
 
-    prev_question = next_question
+        prev_question = next_question
 
-    return jsonify({
-        "accuracy_score": accuracy_score,
-        "total_score": Score,
-        "feedback": feedback,
-        "next_question": next_question
-    })
+        return jsonify({
+            "accuracy_score": accuracy_score,
+            "total_score": Score,
+            "feedback": feedback,
+            "next_question": next_question
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     
