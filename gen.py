@@ -10,15 +10,27 @@ client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 def calculate_accuracyscore(answer, prev_question):
 
     prompt = f"""
-    You are an interviewer.
+    You are a strict technical interviewer.
 
-    Evaluate the candidate's answer.
+    Evaluate the candidate's answer VERY STRICTLY based on:
 
-    Rules:
-    - Return ONLY a number between 0 and 100
-    - Do NOT write anything else
-    - Do NOT explain
-    - Do NOT add words
+    1. Relevance to the question
+    2. Correctness of concepts
+    3. Completeness of explanation
+
+    Scoring rules:
+    - Completely wrong / irrelevant → 0 to 30
+    - Partially correct → 30 to 60
+    - Mostly correct → 60 to 85
+    - Fully correct and clear → 85 to 100
+
+    IMPORTANT RULES:
+    - If answer is unrelated → give LOW score (0–30)
+    - Do NOT give high score for generic or vague answers
+    - Be strict like a real interviewer
+
+    Return ONLY a number between 0 and 100.
+    Do NOT explain.
 
     Question: {prev_question}
     Answer: {answer}
@@ -35,11 +47,11 @@ def calculate_accuracyscore(answer, prev_question):
         text = response.choices[0].message.content
 
         try:
-            score = int(re.findall(r'\d+', text)[0])
-            if 0 <= score <= 100:
-                return score
-            else:
-                return 0
+            numbers = re.findall(r'\d+', text)
+            if numbers:
+                score = int(numbers[0])
+                return min(max(score, 0), 100)
+            return 0
         except:
             return 0
 

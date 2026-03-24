@@ -301,17 +301,8 @@
         chatBox.scrollTop = chatBox.scrollHeight;
     }
 
-    const topics = [
-        "The impact of social media on society",
-        "Climate change and its effects",
-        "The future of artificial intelligence",
-        "The importance of mental health awareness",
-        "The role of technology in education"
-    ];
-
-    // Choose a random topic
-    const chosenTopic = topics[Math.floor(Math.random() * topics.length)];
-    document.getElementById("topic-display").innerText = `Topic: ${chosenTopic}`;
+   // ✅ Set initial topic from backend (Flask)
+    document.getElementById("topic-display").innerText = "Topic: {{ topic }}";;
 
     document.getElementById("submit-response").addEventListener("click", function () {
         submitResponse();
@@ -352,10 +343,12 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ user_input: userInput, topic: chosenTopic })
+                body: JSON.stringify({ user_input: userInput })
             });
 
             const data = await response.json();
+            // 🔥 UPDATE TOPIC DYNAMICALLY
+            document.getElementById("topic-display").innerText = "Topic: " + data.topic;
             
             // Process responses sequentially
             for (let i = 0; i < data.responses.length; i++) {

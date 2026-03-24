@@ -51,6 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
     //MIC INPUT
     let mediaRecorder;
     let audioChunks = [];
+    let stream; 
 
     const startBtn = document.getElementById("startRecording");
     const stopBtn = document.getElementById("stopRecording");
@@ -59,7 +60,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         startBtn.addEventListener("click", async () => {
 
-            let stream;
             try {
                 stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             } catch (err) {
@@ -83,6 +83,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (!mediaRecorder) return;
             mediaRecorder.stop();
+            // 🔥 STOP MIC COMPLETELY
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
 
             mediaRecorder.onstop = () => {
 

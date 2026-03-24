@@ -9,6 +9,8 @@ field = "Data Structures and Algorithm"
 Score = 0
 mul = 1
 difficulty = "easy"
+gd_topic = "Is AI beneficial for society?"
+
 
 @app.route('/')
 def home():
@@ -20,7 +22,8 @@ def mock_interview():
 
 @app.route('/gd')
 def group_discussion():
-    return render_template('gd.html')
+    global gd_topic
+    return render_template('gd.html', topic=gd_topic)
 
 @app.route('/ask', methods=['POST'])
 def ask_question():
@@ -138,7 +141,8 @@ def generate_group_response():
     try:
         data = request.json
         user_input = data.get("user_input")
-        topic = data.get("topic")
+        global gd_topic
+        topic = gd_topic
 
         prompt = f"""
 Topic: {topic}
@@ -173,8 +177,27 @@ Charlie: <Charlie response>
                     "name": name.strip(),
                     "content": content.strip()
                 })
+        # 🎯 GENERATE NEW TOPIC (EVOLVING DISCUSSION)
+        new_topic_prompt = f"""
+        Based on this discussion topic:
+        {topic}
 
-        return jsonify({"responses": responses[:3]})
+        Generate a slightly evolved or follow-up discussion topic.
+        Keep it short (1 line).
+        """
+
+        topic_response = client.chat.completions.create(
+            messages=[{"role": "user", "content": new_topic_prompt}],
+            model="llama-3.1-8b-instant",
+            temperature=0.5
+        )
+
+        gd_topic = topic_response.choices[0].message.content.strip()
+
+        return jsonify({
+            "responses": responses[:3],
+            "topic": gd_topic   # 🔥 ADD THIS
+        })
 
     except Exception:
         return jsonify({
