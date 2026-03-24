@@ -2,6 +2,7 @@ import os
 import librosa
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
+import joblib
 
 DATASET_PATH = "RAVDESS_dataset"
 
@@ -60,3 +61,6 @@ model = RandomForestClassifier(n_estimators=100)
 model.fit(X, y)
 
 print("Model training complete")
+
+joblib.dump(model, "rf_model.pkl")
+print("Model saved as rf_model.pkl")
