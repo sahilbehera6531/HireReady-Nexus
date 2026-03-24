@@ -22,6 +22,7 @@ def extract_features(file_path):
 
 
 features = []
+labels = []
 
 for actor in os.listdir(DATASET_PATH):
     actor_path = os.path.join(DATASET_PATH, actor)
@@ -32,6 +33,17 @@ for actor in os.listdir(DATASET_PATH):
         data = extract_features(file_path)
 
         if data is not None:
+            # extract emotion from filename
+            emotion = int(file.split("-")[2])
+
+            # map to confidence
+            if emotion in [1, 2, 3]:
+                label = 1   # confident
+            else:
+                label = 0   # not confident
+
             features.append(data)
+            labels.append(label)
 
 print("Total samples extracted:", len(features))
+print("Total labels:", len(labels))
