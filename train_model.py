@@ -1,6 +1,7 @@
 import os
 import librosa
 import numpy as np
+from sklearn.ensemble import RandomForestClassifier
 
 DATASET_PATH = "RAVDESS_dataset"
 
@@ -47,3 +48,15 @@ for actor in os.listdir(DATASET_PATH):
 
 print("Total samples extracted:", len(features))
 print("Total labels:", len(labels))
+
+import numpy as np
+
+X = np.array(features)
+y = np.array(labels)
+
+print("Training model...")
+
+model = RandomForestClassifier(n_estimators=100)
+model.fit(X, y)
+
+print("Model training complete")
