@@ -86,10 +86,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
             mediaRecorder.onstop = () => {
 
-                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
 
                 const formData = new FormData();
-                formData.append("audio", audioBlob, "recording.wav");
+                formData.append("audio", audioBlob, "recording.webm");
 
                 fetch('/upload_audio', {
                     method: 'POST',

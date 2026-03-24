@@ -70,15 +70,31 @@ def ask_question():
 @app.route('/upload_audio', methods=['POST'])
 def upload_audio():
     try:
+        global Score, mul, prev_question, difficulty
         file = request.files['audio']
         
         filepath = os.path.join("uploads", "recording.wav")
         file.save(filepath)
 
-        confidence = run_model(filepath)
-        accuracy_score = int(confidence)
+        result = run_model(filepath)
 
-        global Score, mul, prev_question, difficulty
+        confidence_score = result["score"]
+        transcript = result["transcript"]
+
+       # 🎯 HANDLE NO SPEECH
+        if transcript.strip() == "":
+            accuracy_score = 0
+            feedback = "No speech detected. Please speak clearly."
+            Correct = False
+            mul = 1
+        else:
+            # 🎯 content score
+            content_score = calculate_accuracyscore(transcript, prev_question)
+
+            # 🎯 combine scores
+            accuracy_score = int((0.6 * content_score) + (0.4 * confidence_score))
+            accuracy_score = min(accuracy_score, 100)
+            feedback = getfeedback(prev_question, transcript)
 
         # difficulty update (same logic as text)
         if accuracy_score >= 70:
@@ -101,11 +117,10 @@ def upload_audio():
         else:
             Correct = False
             mul = 1
+            
 
         # generate next question (SAME as text flow)
-        next_question = getnextquestion(prev_question, "Audio response", Correct, field, difficulty)
-
-        feedback = "Audio evaluated successfully"
+        next_question = getnextquestion(prev_question, transcript if transcript.strip() != "" else "No answer", Correct, field, difficulty)
 
         prev_question = next_question
 
