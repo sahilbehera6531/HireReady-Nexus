@@ -80,3 +80,10 @@ Content Evaluation (LLM)
 Final Score (Content + Confidence)
         ↓
 Feedback + Next Question
+
+```
+
+## Architecture
+
+<img width="2182" height="4390" alt="diagram" src="https://github.com/user-attachments/assets/bad70a51-4f4c-4598-a307-0b0216a164d5" />
+
